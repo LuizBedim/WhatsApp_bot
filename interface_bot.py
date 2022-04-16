@@ -23,23 +23,6 @@ def janela():
 
     return sg.Window('Whatsapp bot', layout, finalize=True, size=(300, 200))
 
-janela1 = janela()
-
-while True:
-    janelas, eventos, valores = sg.read_all_windows()
-    if janelas == janela1 and eventos == 'Sair' or eventos == sg.WINDOW_CLOSED:
-        break
-
-
-
-
-
-driver = webdriver.Chrome(ChromeDriverManager().install())
-driver.get('https://web.whatsapp.com')
-time.sleep(30)
-
-contatos = ['ANT']
-mensagem = 'apenas teste'
 
 def buscar_contato(contatos):
     campo_pesquisa = driver.find_element_by_xpath('//div[contains(@class,"copyable-text selectable-text")]')
@@ -48,6 +31,7 @@ def buscar_contato(contatos):
     campo_pesquisa.send_keys(contatos)
     campo_pesquisa.send_keys(Keys.ENTER)
 
+
 def enviar_mensagem(mensagem):
     campo_mensagem = driver.find_elements_by_xpath('//div[contains(@class,"copyable-text selectable-text")]')
     campo_mensagem[1].click()
@@ -55,7 +39,28 @@ def enviar_mensagem(mensagem):
     campo_mensagem[1].send_keys(mensagem)
     campo_mensagem[1].send_keys(Keys.ENTER)
 
-for contato in contatos:
-    buscar_contato(contato)
-    enviar_mensagem(mensagem)
+
+janela1 = janela()
+
+
+while True:
+    janelas, eventos, valores = sg.read_all_windows()
+    if janelas == janela1 and eventos == 'Sair' or eventos == sg.WINDOW_CLOSED:
+        break
+
+    if janelas == janela1 and eventos == 'Enviar':
+
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver.get('https://web.whatsapp.com')
+        time.sleep(30)
+
+        contatos = valores['cont']
+        mensagem = valores['mensa']
+
+        for contato in contatos:
+            buscar_contato(contato)
+            enviar_mensagem(mensagem)
+            break
+
+        sg.popup('Mensagem envida, fim da execução')
 # copyable-text selectable-text

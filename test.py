@@ -25,3 +25,4 @@ while True:
     janelas, eventos, valores = sg.read_all_windows()
     if janelas == janela1 and eventos == 'Sair' or eventos == sg.WINDOW_CLOSED:
         break
+
